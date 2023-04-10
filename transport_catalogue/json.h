@@ -14,8 +14,9 @@ class Node;
 // Объявления Dict и Array
 using Dict = std::map<std::string, Node>;
 using Array = std::vector<Node>;
+
 using Value = std::variant<std::nullptr_t, Array, Dict, bool, int, double, std::string>;
-          using namespace std::literals;    
+          using namespace std::literals;  //std::variant для хранения различных значений в узле.
         
     
 // Эта ошибка выбрасывается при ошибках парсинга JSON
@@ -26,10 +27,11 @@ public:
 
 Node LoadString(std::istream& input);
     
-    
+//Узел JSON-файла    
 class Node {
 
 public:
+    //Конструкторы
     Node() = default;    
     Node(Array value);
     Node(std::nullptr_t value);
@@ -39,8 +41,11 @@ public:
     Node(double value);
     Node(std::string value);
     
+    //Геттеры
     const Value& GetValue() const ;
-     Value& GetValue() ;
+    Value& GetValue() ;
+    
+    //Проверка типа значения
     bool IsInt() const ;
     bool IsDouble() const ;
     bool IsPureDouble() const ;
@@ -50,6 +55,7 @@ public:
     bool IsArray() const ; 
     bool IsMap() const ;
     
+    //Возврат в зависимости от типа данных
     const Array& AsArray() const ;
     const Dict& AsMap() const ;
     bool AsBool() const;
@@ -69,7 +75,7 @@ private:
     
 }; //node end
 
-    
+//Класс JSON-документа
 class Document {
 public:
     explicit Document(Node root);
