@@ -4,8 +4,7 @@ using namespace std;
 using namespace std::literals;
 namespace json {
 
-    
-    
+//Конструкторы
 Node::Node(Array value) 
         : value_(std::move(value)) {}   
 Node::Node(std::nullptr_t value) 
@@ -113,8 +112,10 @@ const std::string& Node::AsString() const {
 namespace {
 
 using Number = std::variant<int, double>;
-    //-
+    
 Node LoadNode(istream& input);
+
+//Парсинг разных типов данных из потока ввода.
 
 Node LoadNull(std::istream& input) {
          //std::cerr << "  null "  << std::endl;
@@ -369,7 +370,7 @@ Node LoadNode(istream& input) {
 }
 
 
-    
+//Структура visitor для variant-значения узла
 struct visitor {
     std::ostream& out1;    
     void operator()([[maybe_unused]]std::nullptr_t a) const {
@@ -454,6 +455,7 @@ Document Load(istream& input) {
     return Document{LoadNode(input)};
 }
 
+//Вывод JSON-документа
 void Print(const Document& doc, std::ostream& output) {
     std::visit(visitor{output}, doc.GetRoot().GetValue()); 
 }
